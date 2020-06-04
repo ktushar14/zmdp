@@ -91,7 +91,7 @@ void doSolve(const ZMDPConfig& config)
   so.solver->planInit(so.sim->getModel(), &config);
   printf("%05d finished initialization, beginning to improve policy\n",
 	 (int) run.elapsedTime());
-  
+
   setSignalHandler(SIGINT, &sigIntHandler);
 
   double lastPrintTime = -1000;
@@ -225,7 +225,7 @@ void doEvaluate(const ZMDPConfig& config)
 
     if (mdpExec != NULL) {
       Pomdp* plannerPomdp = (Pomdp*) mdpExec->mdp;
-      
+
       if (! ((plannerPomdp->getNumActions() == simPomdp->getNumActions())
 	     && (plannerPomdp->getNumObservations() == simPomdp->getNumObservations()))) {
 	printf("ERROR: planner model %s and evaluation model %s must have the same number of actions and observations\n",
@@ -450,7 +450,7 @@ int main(int argc, char **argv) {
       configArgs << args << " ";
     }
   }
-  
+
   // config step 1: read defaults embedded in binary
   ZMDPConfig config;
   config.setString("binaryName", argv[0]);
@@ -470,7 +470,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "ERROR: expected at most two arguments without flags (use -h for help)\n");
     exit(EXIT_FAILURE);
   }
-  
+
   // process command
   if (nonOptionArgs.size() >= 1) {
     config.setString("command", nonOptionArgs[0]);

@@ -1,6 +1,6 @@
 /********** tell emacs we use -*- c++ -*- style comments *******************
  $Revision: 1.5 $  $Author: trey $  $Date: 2007-04-08 22:48:04 $
-  
+
  @file    FastParser.cc
  @brief   No brief
 
@@ -145,7 +145,6 @@ void FastParser::readModelFromStream(CassandraModel& p,
     if ('#' == buf[0]) continue;
     trimTrailingWhiteSpace(buf);
     if ('\0' == buf[0]) continue;
-    
     if (inPreamble) {
       if (PM_PREFIX_MATCHES("discount:")) {
 	if (1 != sscanf(buf,"discount: %lf", &p.discount)) {
@@ -207,7 +206,7 @@ void FastParser::readModelFromStream(CassandraModel& p,
 	       << endl;
 	  exit(EXIT_FAILURE);
 	}
-	readStartVector(p, buf, expectPomdp);
+    readStartVector(p, buf, expectPomdp);
 	startSet = true;
       } else {
 	// the statement is not one that is expected in the preamble,
@@ -229,7 +228,7 @@ void FastParser::readModelFromStream(CassandraModel& p,
 	} else {
 	  p.numObservations = -1;
 	}
-	
+
 	// initialize data structures
 	Rx.resize(p.numStates, p.numActions);
 	Tx.resize(p.numActions);
@@ -334,7 +333,7 @@ void FastParser::readModelFromStream(CassandraModel& p,
 
 #if 1
       cmatrix checkObs;
-      
+
       // extra error checking
       kmatrix_transpose_in_place(Ox[a]);
       copy(checkObs, Ox[a]);
@@ -417,7 +416,7 @@ void FastParser::readStartVector(CassandraModel& p,
 	  exit(EXIT_FAILURE);
 	}
       }
-      
+
       val = atof(tok);
       if (val > SPARSE_EPS) {
 	p.initialBelief.push_back(i, val);

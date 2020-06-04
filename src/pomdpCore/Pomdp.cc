@@ -53,7 +53,8 @@ Pomdp::Pomdp(const std::string& fileName,
   bool useFastModelParser = config->getBool("useFastModelParser");
   if (useFastModelParser) {
     FastParser parser;
-    parser.readPomdpFromFile(*this, fileName);
+      std::cout << "FastParser\n";
+      parser.readPomdpFromFile(*this, fileName);
   } else {
     CassandraParser parser;
     parser.readPomdpFromFile(*this, fileName);

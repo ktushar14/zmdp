@@ -98,10 +98,11 @@ sub action_to_string {
     my $action_type = substr($action_name,1,1);
     if ($action_type eq 'm') {
         return $direction_map{substr($action_name,2,1)};
-    } elsif ($action_type eq 'c') {
-        return 4 + substr($action_name,2,1);
+    # } elsif ($action_type eq 'c') {
+    #     return 4 + substr($action_name,2,1);
     } elsif ($action_type eq 's') {
-        return 4 + $NUM_ROCKS;
+        # return 4 + $NUM_ROCKS;
+        return 4; # sample is 5th (index 4) action since no check actions anymore
     }
     } else {
     return $action_name;
@@ -271,6 +272,8 @@ sub check {
     my $s = shift;
     my $a = shift;
 
+    print STDERR "CALLED CHECK!\n";
+
     my ($x,$y,$r) = @{$s};
     my $rock_num = substr($a,2,1);
 
@@ -335,7 +338,8 @@ EOF
     # print list of actions
     my @action_list = &gen_action_list();
     if ($AS_NUMBERS) {
-    print "actions: ", (4 + $NUM_ROCKS + 1), "\n";
+    # print "actions: ", (4 + $NUM_ROCKS + 1), "\n"; # no check actions anymore
+    print "actions: ", (4 + 1), "\n";
     } else {
     print "actions: ", join(" ", map { &action_to_string($_); } @action_list), "\n";
     }

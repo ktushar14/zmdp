@@ -109,7 +109,7 @@ int getEnum(const std::string& key, EnumEntry* table, const char *opt)
     fprintf(stderr, "'%s' ", i->key);
   }
   fprintf(stderr, "(-h for help)\n");
-  
+
   exit(EXIT_FAILURE);
 }
 
@@ -286,9 +286,13 @@ void constructSolverObjects(SolverObjects& obj,
 			    SolverParams& p,
 			    const ZMDPConfig& config)
 {
+  cerr << "In constructSolverObjects\n";
   switch (p.modelType) {
   case T_POMDP:
+    cerr << "Constructing POMDP\n";
+    cerr << "p.probName: " << p.probName << "\n";
     obj.problem = new Pomdp(p.probName, &config);
+    cerr << "Constructed POMDP\n";
     break;
   case T_MDP:
     obj.problem = new GenericDiscreteMDP(p.probName, &config);
@@ -426,12 +430,12 @@ void constructSolverObjects(SolverObjects& obj,
     p.maintainLowerBound && p.maintainUpperBound &&
     (V_POINT == p.lowerBoundRepresentation) &&
     (V_POINT == p.upperBoundRepresentation);
-    
+
   obj.bounds = new BoundPair(p.maintainLowerBound,
 			     p.maintainUpperBound,
 			     p.useUpperBoundRunTimeActionSelection,
 			     dualPointBounds);
-  
+
   PointLowerBound* plb;
   MaxPlanesLowerBound* mlb;
   if (p.maintainLowerBound) {
