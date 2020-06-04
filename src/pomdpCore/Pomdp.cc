@@ -1,6 +1,6 @@
 /********** tell emacs we use -*- c++ -*- style comments *******************
  $Revision: 1.24 $  $Author: trey $  $Date: 2007-03-24 22:45:26 $
-  
+
  @file    Pomdp.cc
  @brief   No brief
 
@@ -82,7 +82,7 @@ obs_prob_vector& Pomdp::getObsProbVector(obs_prob_vector& result,
   mult( tmp, Ttr[a], b );
   // result = O_a' * tmp
   mult( result, tmp, O[a] );
-  
+
   return result;
 }
 
@@ -98,6 +98,23 @@ belief_vector& Pomdp::getNextBelief(belief_vector& result,
 
   // renormalize
   result *= (1.0/sum(result));
+
+  // std::cout << "div: " << b.data[0].value / result.data[0].value << "\n";
+  // if (a == 4) {
+  //   std::cout << "a: " << a << "\n";
+  //   std::cout << "belief_vector b: size = " << b.data.size() << "\n";
+  //   for (unsigned int i = 0; i < b.data.size(); ++i) {
+  //     std::cout << "  " << b.data[i].value << "\n";
+  //   }
+  //   std::cout << "\n";
+
+  //   std::cout << "belief_vector result: size = " << result.data.size() << "\n";
+  //   for (unsigned int i = 0; i < result.data.size(); ++i) {
+  //     std::cout << "  " << result.data[i].value << "\n";
+  //   }
+  //   std::cout << "\n**************************************************************\n";
+  //   getchar();
+  // }
 
   return result;
 }
