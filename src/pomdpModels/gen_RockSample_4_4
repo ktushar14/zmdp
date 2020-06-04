@@ -38,6 +38,7 @@ $DEFAULT_OBSERVATION = [[1,'ogood']];
 $ILLEGAL_RESULT = [$ILLEGAL_PENALTY, [[1,'st']], $DEFAULT_OBSERVATION];
 
 &main();
+print STDERR "Generated $prob_file!\n";
 
 ######################################################################
 
@@ -126,7 +127,7 @@ sub action_result {
     if ($s eq 'st') {
 	return [0, [[1,'st']], $DEFAULT_OBSERVATION];
     }
-    
+
     my $action_type = substr($a,1,1);
     if ($action_type eq 'm') {
 	return &move($s,$a);
@@ -199,7 +200,7 @@ sub check {
     my ($rx,$ry) = @{$ROCK_POSITIONS[$rock_num]};
     my $d = sqrt(($x - $rx)**2 + ($y - $ry)**2);
     my $eff = exp(-$d);
-    
+
     # at efficiency 1, the sensor always tells you the right answer;
     # at efficiency 0, it tells you 50/50.  in between, a linear combination.
     my $rock_is_good = ($r & (1 << ($NUM_ROCKS-$rock_num-1))) != 0;
@@ -229,7 +230,7 @@ sub which_rock {
 sub main {
     open(OUT, ">$prob_file") or die "couldn't open $prob_file for writing: $!\n";
     select OUT;
-    
+
     print << "EOF"; #####################################################
 # state naming convention: s <x> <y> <rock_0> <rock_1> .. <rock_{n-1}>
 # action naming convention:
@@ -251,7 +252,7 @@ EOF
 
     print "discount: 0.95\n";
     print "values: reward\n";
-    
+
     # print list of actions
     my @action_list = &gen_action_list();
     print "actions: ", join(" ", @action_list), "\n";
@@ -297,7 +298,7 @@ EOF
 	    print "\n";
 	}
     }
-    
+
     close(OUT);
 }
 
