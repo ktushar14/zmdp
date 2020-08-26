@@ -27,6 +27,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 #include "MatrixUtils.h"
 #include "MDPSim.h"
@@ -43,6 +44,8 @@
 using namespace std;
 using namespace MatrixUtils;
 using namespace zmdp;
+
+std::ofstream g_boundsOutput;
 
 enum CommandsEnum {
   CMD_SOLVE,
@@ -111,12 +114,22 @@ void doSolve(const ZMDPConfig& config)
       reachedTimeout = true;
     }
 
-    // print a progress update every 10 seconds
-    if ((elapsed - lastPrintTime > 10)
-	|| reachedTargetPrecision || reachedTimeout || userTerminatedG) {
+    // print a progress update every "updateInterval" seconds
+    int updateInterval = 1;
+    if ((elapsed - lastPrintTime > updateInterval)
+	      || reachedTargetPrecision
+        || reachedTimeout
+        || userTerminatedG)
+    {
       ValueInterval intv = so.solver->getValueAt(so.sim->getModel()->getInitialState());
-      printf("%05d %6d calls to solver, bounds [%8.4f .. %8.4f], regret <= %g\n",
-	     (int) elapsed, numSolverCalls, intv.l, intv.u, (intv.u - intv.l));
+      // printf("%05d %6d calls to solver, bounds [%8.4f .. %8.4f], regret <= %g\n",
+	     // (int) elapsed, numSolverCalls, intv.l, intv.u, (intv.u - intv.l));
+      g_boundsOutput << (int)elapsed << ","
+                     << numSolverCalls << ","
+                     << std::setprecision(6) << intv.l << ","
+                     << std::setprecision(6) << intv.u << ","
+                     << std::setprecision(6) << (intv.u - intv.l)
+                     << std::endl;
       lastPrintTime = elapsed;
     }
   }
@@ -134,7 +147,8 @@ void doSolve(const ZMDPConfig& config)
   }
 
   // write out a policy
-  if (NULL == p.policyOutputFile) {
+  // if (NULL == p.policyOutputFile) {
+  if (true) {
     printf("%05d (not outputting policy)\n", (int) run.elapsedTime());
   } else {
     printf("%05d writing policy to '%s'\n", (int) run.elapsedTime(), p.policyOutputFile);
@@ -399,6 +413,9 @@ void usage(const char* cmd0, const std::string& cmd1)
 int main(int argc, char **argv) {
   SolverParams p;
 
+  g_boundsOutput.open("bounds_per_second.csv", std::ios_base::app); // append instead of overwrite
+  g_boundsOutput << "seconds,calls_to_solver,lb,ub,regret" << std::endl;
+
   // save arguments for debug printout later
   ostringstream outs;
   for (int i=1; i < argc; i++) {
@@ -539,6 +556,7 @@ int main(int argc, char **argv) {
     assert(0); // never reach this point
   }
 
+  g_boundsOutput.close();
   return 0;
 }
 
