@@ -2,6 +2,7 @@ obj/
 lib/
 bin/
 include/
+results/
 src/parsers/include/
 src/tests/testTmp/
 src/pomdpModels/exp_*
