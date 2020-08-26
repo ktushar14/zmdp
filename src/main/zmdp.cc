@@ -410,10 +410,28 @@ void usage(const char* cmd0, const std::string& cmd1)
   }
 }
 
+std::string getResultFilenameFromCmdLineArg(std::string toSplit) {
+  std::stringstream toSplitBySlash(toSplit);
+  std::string segment;
+  std::vector<std::string> seglist;
+  while (std::getline(toSplitBySlash, segment, '/')) {
+    seglist.push_back(segment);
+  }
+  std::stringstream toSplitByDot(seglist.back());
+  segment.clear();
+  seglist.clear();
+  while (std::getline(toSplitByDot, segment, '.')) {
+    seglist.push_back(segment);
+  }
+  return seglist.front() + "_bounds_per_second.csv";
+}
+
 int main(int argc, char **argv) {
   SolverParams p;
 
-  g_boundsOutput.open("bounds_per_second.csv", std::ios_base::app); // append instead of overwrite
+  // extract experiment instance name from cmd line argument
+  std::string resultsFilename = getResultFilenameFromCmdLineArg(std::string(argv[argc-1]));
+  g_boundsOutput.open(resultsFilename.c_str(), std::ios_base::app); // append instead of overwrite
   g_boundsOutput << "seconds,calls_to_solver,lb,ub,regret" << std::endl;
 
   // save arguments for debug printout later
