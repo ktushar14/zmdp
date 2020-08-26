@@ -23,30 +23,31 @@ $prob_file = "$prob_name.pomdp";
 
 $X_SIZE = 10;
 $Y_SIZE = $X_SIZE;
-@INITIAL_POS = (0,0);
+@INITIAL_POS = (0,5);
 
 # can use the following to generate points
 #perl -e 'for (1..10) { $x = int(rand(10)); $y = int(rand(10)); print "[$x, $y],\n"; }' | sort
 
-@ROCK_POSITIONS = ([0, 3],
-           [0, 7],
-           [1, 8],
-           [3, 3],
-           [3, 8],
-           [4, 3],
-           [5, 8],
-           [6, 1],
-           [9, 3],
-           [9, 9],
-           );
+@ROCK_POSITIONS = (
+    [2, 5],
+    [3, 3],
+    [4, 9],
+    [5, 4],
+    [6, 6],
+    [7, 3],
+    [8, 7],
+    [9, 4],
+    [10, 7],
+    [3, 4],
+);
 $NUM_ROCKS = $#ROCK_POSITIONS+1;
 $TERMINAL_REWARD = 10;
 $ILLEGAL_PENALTY = -100;
 $SAMPLE_GOOD_REWARD = 10;
 $SAMPLE_BAD_PENALTY = -10;
 
-$GOOD_ROCK_PRIOR = 0.7;
-$BAD_ROCK_PRIOR = 0.3;
+$GOOD_ROCK_PRIOR = 0.6;
+$BAD_ROCK_PRIOR = 0.4;
 
 $SENSOR_HALF_EFF_DISTANCE = 20;
 
