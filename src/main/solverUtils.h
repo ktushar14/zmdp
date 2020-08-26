@@ -1,6 +1,6 @@
 /********** tell emacs we use -*- c++ -*- style comments *******************
  $Revision: 1.18 $  $Author: trey $  $Date: 2007-07-08 20:59:30 $
-   
+
  @file    solverUtils.h
  @brief   No brief
 
