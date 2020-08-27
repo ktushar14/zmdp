@@ -98,12 +98,6 @@ void doSolve(const ZMDPConfig& config)
   double initializationTime = run.elapsedTime();
   std::cout << "  initializationTime: " << initializationTime << "\n";
 
-  // extract experiment instance name from cmd line argument
-  std::string resultsFilename = getResultFilenameFromCmdLineArg(std::string(argv[argc-1]));
-  g_boundsOutput.open(resultsFilename.c_str(), std::ios_base::app); // append instead of overwrite
-  g_boundsOutput << "initializationTime: " << initializationTime << std::endl;
-  g_boundsOutput << "seconds,calls_to_solver,lb,ub,regret" << std::endl;
-
   setSignalHandler(SIGINT, &sigIntHandler);
 
   double lastPrintTime = -1000;
@@ -441,10 +435,10 @@ std::string getResultFilenameFromCmdLineArg(std::string toSplit) {
 int main(int argc, char **argv) {
   SolverParams p;
 
-  // // extract experiment instance name from cmd line argument
-  // std::string resultsFilename = getResultFilenameFromCmdLineArg(std::string(argv[argc-1]));
-  // g_boundsOutput.open(resultsFilename.c_str(), std::ios_base::app); // append instead of overwrite
-  // g_boundsOutput << "seconds,calls_to_solver,lb,ub,regret" << std::endl;
+  // extract experiment instance name from cmd line argument
+  std::string resultsFilename = getResultFilenameFromCmdLineArg(std::string(argv[argc-1]));
+  g_boundsOutput.open(resultsFilename.c_str(), std::ios_base::app); // append instead of overwrite
+  g_boundsOutput << "seconds,calls_to_solver,lb,ub,regret" << std::endl;
 
   // save arguments for debug printout later
   ostringstream outs;

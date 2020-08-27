@@ -32,6 +32,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "zmdpCommonDefs.h"
 #include "MatrixUtils.h"
@@ -134,13 +135,20 @@ void FastParser::readModelFromStream(CassandraModel& p,
   (0 == strncmp(buf,(X),strlen(X)))
 
   lineNumber = 1;
+  std::string line;
   while (!in.eof()) {
+    std::getline(in, line);
+    std::cout << "  line: " << line << std::endl;
+    int numCharsToUnget = (int)line.size() + 1;
+    while (numCharsToUnget--) { in.unget(); }
+
     in.getline(buf,sizeof(buf));
     if (in.fail() && !in.eof()) {
       cerr << "ERROR: " << p.fileName << ": line " << lineNumber << ": line too long for buffer"
 	   << " (max length " << sizeof(buf) << ")" << endl;
       exit(EXIT_FAILURE);
     }
+    std::cout << "  buf:  " << buf << std::endl;
 
     if ('#' == buf[0]) continue;
     trimTrailingWhiteSpace(buf);
