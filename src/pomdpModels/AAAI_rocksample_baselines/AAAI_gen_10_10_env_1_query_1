@@ -16,39 +16,30 @@
 # implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-$prob_name = "exp_RockSample_NoCheck_20_20_1";
+$prob_name = "exp_RockSample_NoCheck_10_10_1_1";
 $prob_file = "$prob_name.pomdp";
 
 # 7 x 7 board, 256 rock good/bad = 12544 states
 
-$X_SIZE = 20;
+$X_SIZE = 10;
 $Y_SIZE = $X_SIZE;
-@INITIAL_POS = (0,10);
+@INITIAL_POS = (0,1);
 
 # can use the following to generate points
 #perl -e 'for (1..10) { $x = int(rand(10)); $y = int(rand(10)); print "[$x, $y],\n"; }' | sort
 
+# rock positions should be 0-indexed
 @ROCK_POSITIONS = (
-    [2, 13],
-    [3, 16],
-    [4, 3],
-    [5, 19],
-    [6, 16],
-    [7, 11],
-    [8, 10],
-    [9, 10],
-    [10, 7],
-    [11, 11],
-    [12, 11],
-    [13, 17],
-    [14, 17],
-    [15, 14],
-    [16, 9],
-    [17, 17],
-    [18, 12],
-    [19, 8],
-    [20, 19],
-    [3, 4],
+    [2-1, 5-1],
+    [3-1, 3-1],
+    [4-1, 9-1],
+    [5-1, 4-1],
+    [6-1, 6-1],
+    [7-1, 3-1],
+    [8-1, 7-1],
+    [9-1, 4-1],
+    [10-1, 7-1],
+    [3-1, 4-1],
 );
 $NUM_ROCKS = $#ROCK_POSITIONS+1;
 $TERMINAL_REWARD = 10;
