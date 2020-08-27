@@ -95,6 +95,15 @@ void doSolve(const ZMDPConfig& config)
   printf("%05d finished initialization, beginning to improve policy\n",
 	 (int) run.elapsedTime());
 
+  double initializationTime = run.elapsedTime();
+  std::cout << "  initializationTime: " << initializationTime << "\n";
+
+  // extract experiment instance name from cmd line argument
+  std::string resultsFilename = getResultFilenameFromCmdLineArg(std::string(argv[argc-1]));
+  g_boundsOutput.open(resultsFilename.c_str(), std::ios_base::app); // append instead of overwrite
+  g_boundsOutput << "initializationTime: " << initializationTime << std::endl;
+  g_boundsOutput << "seconds,calls_to_solver,lb,ub,regret" << std::endl;
+
   setSignalHandler(SIGINT, &sigIntHandler);
 
   double lastPrintTime = -1000;
@@ -109,8 +118,11 @@ void doSolve(const ZMDPConfig& config)
     numSolverCalls++;
 
     // check timeout
+    // double elapsed = run.elapsedTime();
+
+    // check timeout but only see time since policy improvement began
     double elapsed = run.elapsedTime();
-    if (elapsed >= p.terminateWallclockSeconds) {
+    if ((elapsed - initializationTime) >= p.terminateWallclockSeconds) {
       reachedTimeout = true;
     }
 
@@ -124,7 +136,7 @@ void doSolve(const ZMDPConfig& config)
       ValueInterval intv = so.solver->getValueAt(so.sim->getModel()->getInitialState());
       // printf("%05d %6d calls to solver, bounds [%8.4f .. %8.4f], regret <= %g\n",
 	     // (int) elapsed, numSolverCalls, intv.l, intv.u, (intv.u - intv.l));
-      g_boundsOutput << (int)elapsed << ","
+      g_boundsOutput << (int)elapsed - (int)initializationTime << ","
                      << numSolverCalls << ","
                      << std::setprecision(6) << intv.l << ","
                      << std::setprecision(6) << intv.u << ","
@@ -429,10 +441,10 @@ std::string getResultFilenameFromCmdLineArg(std::string toSplit) {
 int main(int argc, char **argv) {
   SolverParams p;
 
-  // extract experiment instance name from cmd line argument
-  std::string resultsFilename = getResultFilenameFromCmdLineArg(std::string(argv[argc-1]));
-  g_boundsOutput.open(resultsFilename.c_str(), std::ios_base::app); // append instead of overwrite
-  g_boundsOutput << "seconds,calls_to_solver,lb,ub,regret" << std::endl;
+  // // extract experiment instance name from cmd line argument
+  // std::string resultsFilename = getResultFilenameFromCmdLineArg(std::string(argv[argc-1]));
+  // g_boundsOutput.open(resultsFilename.c_str(), std::ios_base::app); // append instead of overwrite
+  // g_boundsOutput << "seconds,calls_to_solver,lb,ub,regret" << std::endl;
 
   // save arguments for debug printout later
   ostringstream outs;
