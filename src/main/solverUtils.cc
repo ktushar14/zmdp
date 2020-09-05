@@ -320,31 +320,37 @@ void constructSolverObjects(SolverObjects& obj,
 
   switch (p.searchStrategy) {
   case S_FRTDP:
+    std::cout << "  case S_FRTDP\n";
     obj.solver = new FRTDP();
     lowerBoundRequired = true;
     upperBoundRequired = true;
     break;
   case S_HSVI:
+    std::cout << "  case S_HSVI\n";
     obj.solver = new HSVI();
     lowerBoundRequired = true;
     upperBoundRequired = true;
     break;
   case S_RTDP:
+    std::cout << "  case S_RTDP\n";
     obj.solver = new RTDP();
     lowerBoundRequired = false;
     upperBoundRequired = true;
     break;
   case S_LRTDP:
+    std::cout << "  case S_LRTDP\n";
     obj.solver = new LRTDP();
     lowerBoundRequired = false;
     upperBoundRequired = true;
    break;
   case S_HDP:
+    std::cout << "  case S_HDP\n";
     obj.solver = new HDP();
     lowerBoundRequired = false;
     upperBoundRequired = true;
     break;
   case S_SCRIPT:
+    std::cout << "  case S_SCRIPT\n";
     obj.solver = new ScriptedUpdater();
     lowerBoundRequired = false;
     upperBoundRequired = false;
