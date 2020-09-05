@@ -6,3 +6,6 @@ results/
 src/parsers/include/
 src/tests/testTmp/
 src/pomdpModels/exp_*
+
+!results/AAAI_baselines.sh
+!results/*.csv
